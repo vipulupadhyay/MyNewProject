@@ -1,0 +1,533 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<script src="~/Scripts/jtip.js"></script>
+<style>
+    div#Tooltip_Text_container {
+        max-width: 25em;
+        height: auto;
+        display: inline;
+        position: relative;
+    }
+
+        div#Tooltip_Text_container a {
+            text-decoration: none;
+            color: black;
+            cursor: default;
+            font-weight: normal;
+        }
+
+            div#Tooltip_Text_container a span.tooltips {
+                visibility: hidden;
+                opacity: 0;
+                transition: visibility 0s linear 0.2s, opacity 0.2s linear;
+                position: absolute;
+                left: 10px;
+                top: 18px;
+                border: 1px solid #404040;
+                padding: 0.2em 0.5em;
+                cursor: default;
+                line-height: 140%;
+                font-size: 12px;
+                font-family: 'Segoe UI';
+                -moz-border-radius: 3px;
+                -webkit-border-radius: 3px;
+                border-radius: 3px;
+                -moz-box-shadow: 7px 7px 5px -5px #666;
+                -webkit-box-shadow: 7px 7px 5px -5px #666;
+                box-shadow: 7px 7px 5px -5px #666;
+                background: #E4E5F0 repeat-x;
+            }
+
+        div#Tooltip_Text_container:hover a span.tooltips {
+            visibility: visible;
+            opacity: 1;
+            transition-delay: 0.2s;
+            z-index: 99999;
+        }
+
+        div#Tooltip_Text_container img {
+            left: -10px;
+        }
+
+        div#Tooltip_Text_container:hover a span.tooltips {
+            visibility: visible;
+            opacity: 1;
+            transition-delay: 0.2s;
+        }
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Add Employee</button>
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table id="tblEmployee" class="table table-condensed table-hover table-responsive table-striped ">
+                <tfoot>
+                <th></th>
+                <th>Name</th>
+                <th>Email</th>
+                </tfoot>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th style="display:none">Profile</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="hf_UserId" />
+
+
+<div class="container">
+    <!-- Trigger the modal with a button -->
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Employee Form</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Full Name</label>
+                                            <input id="txtFullName" type="text" class="form-control" placeholder="Enter Full Name" />
+                                            <span id="sp_FullName" style="color:red"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                            <input id="txtEmail" type="email" class="form-control" placeholder="Enter Email" />
+                                            <span id="sp_txtEmail" style="color:red"></span>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Gender</label>
+
+                                            <select id="dllGender" class="form-control">
+                                                <option>Select Gender</option>
+                                                <option value="Male" >Male</option>
+                                                <option value="Female">Female</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Upload Profile</label>
+                                            <input id="fileupload"  accept="image/*" onchange="UploadImage(this)" type="file" name="file" class="form-control" placeholder="Upload Profile" />
+                                            <input type="hidden" id="hdImage" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Passward</label>
+                                            <input id="txtPassward" type="password" class="form-control" placeholder="Enter Passward " />
+                                            <span id="sp_txtPassward" style="color:red"></span>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Confirm Passward</label>
+                                            <input id="txtConfirmPassward" type="password" class="form-control" placeholder="Enter Passward " />
+                                            <span id="sp_txtConfirmPassward" style="color:red"></span>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="dvImage" class="col-md-6" style="display:none">
+                                    <div class="form-group">
+                                        <label>Preview Image</label>
+                                        <img width="250" id="imPreviewImage" src="#" alt="your image" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab panels -->
+                        <div class="tab-content ">
+                            <!--Panel 1-->
+                            <div class="tab-pane fade in show active" id="panel1" role="tabpanel">
+
+                            </div>
+                            <!--/.Panel 1-->
+                            <!--Panel 2-->
+                            <div class="tab-pane fade" id="panel2" role="tabpanel">
+
+                            </div>
+                            <!--/.Panel 2-->
+                            <!--Panel 3-->
+                            <div class="tab-pane fade" id="panel3" role="tabpanel">
+
+                            </div>
+                            <!--/.Panel 3-->
+                        </div>
+                        <div class="col-md-12 col-md-12">
+
+                            <div id="exTab2" class="">
+                                <ul class="nav nav-tabs">
+                                    <li class="active">
+                                        <a href="#1" data-toggle="tab">Education</a>
+                                    </li>
+                                    <li>
+                                        <a href="#2" data-toggle="tab">Bank</a>
+                                    </li>
+                                    <li>
+                                        <a href="#3" data-toggle="tab">Sport</a>
+                                    </li>
+                                </ul>
+
+                                <div class="tab-content ">
+                                    <div class="tab-pane active" id="1">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Education</label>
+                                                        <select id="dllDegree" class="form-control">
+                                                            <option>Select Degree</option>
+                                                            <option value="1">MscIt</option>
+                                                            <option value="2">BE</option>
+                                                        </select>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="2">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Bank</label>
+                                                        <input id="txtBankName" type="text" class="form-control" placeholder="Enter Bank " />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="3">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Sport</label>
+                                                        <input id="txtSport" type="text" class="form-control" placeholder="Enter Bank " />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input onclick="InsertData()" value="Submit" class="btn btn-default" />
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+
+
+    $(document).ready(function () {
+        var oTable;
+        BindDataTable();
+        $('#hf_UserId').val(null);
+    });
+
+    function BindDataTable() {
+        $('#tblEmployee tfoot th').each(function (index, item) {
+            if (index != 0) {
+                var title = $('#tblEmployee thead th').eq($(this).index()).text();
+                $(this).html('<input type="text" class="form-control" placeholder="' + title + '" />');
+            }
+        });
+
+        oTable = $('#tblEmployee').DataTable({
+            "bServerSide": true,
+            "sAjaxSource": '@Url.Action("GetAllUserListJSON", "Home")',
+            "bProcessing": true,
+            "aoColumns": [
+                            {
+                                "sName": "UserId",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "width": 122,
+
+                                "render": function (data, type, full, meta) {
+
+                                    var html = "<div id=\"Tooltip_Text_container\">" +
+                                                    "<span>View</span>" +
+                                                    "<a href=\"#\">" +
+                                                      "<span class=\"tooltips\">" +
+                                                 "<table class=\"table table-condensed table-hover table-responsive table-striped \">" +
+                                                 "<thead><th>Details</th></th>Employee</th></thead>" +
+                                                 "<tbody>" +
+                                                 "<tr> <td>FullName</td><td>" + full[1] + "</td></tr>" +
+                                                 "<tr><td>Email</td><td>" + full[2] + "</td></tr>" +
+                                                 "<tr><td>Profile Picture</td><td><img src=" + "../Uploads/" + full[3] + " alt=\"\" width=\"550\" height=\"200\"></td></tr>" +
+                                                 "</tbody>" +
+                                                 "</table>" +
+                                                      "</span>" +
+                                                    "</a>" +
+                                                  "</div> <a onclick='Edit(" + full[0] + ")'>Edit</a> <a onclick='Delete(" + full[0] + ")'>Delete</a>";
+                                    return html;
+
+                                }
+                            },
+                            { "sName": "FullName" },
+                            { "sName": "Email" },
+                            { "sName": "ProfileImage", "visible": false }
+            ]
+        });
+
+        //oTable.$('tr').tooltip({
+        //    "delay": 0,
+        //    "track": true,
+        //    "fade": 250
+        //});
+
+        $('#tblEmployee').on('draw.dt', function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+
+        oTable.columns().eq(0).each(function (colIdx) {
+            $('input', oTable.column(colIdx).footer()).on('keyup change', function () {
+                console.log(colIdx + '-' + this.value);
+                oTable.column(colIdx)
+                        .search(this.value)
+                        .draw();
+            });
+        });
+    }
+    function Edit(UserID) {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("Edit", "Home")",
+            data: { id: UserID },
+            dataType: 'json',
+            success: function (data) {
+
+                if (data != "") {
+                    $('#hf_UserId').val(UserID);
+                    $('#myModal').modal('show');
+                    $('#myModal').on('shown.bs.modal', function () {
+                        if ($('#hf_UserId').val() != null && $('#hf_UserId').val() != "") {
+
+                            $('#txtFullName').val(data.data.FullName);
+                            $('#txtEmail').val(data.data.Email);
+                            $('#dllGender').val(data.data.Gender);
+                            $('#txtPassward').val(data.data.Passward);
+                            $('#txtConfirmPassward').val(data.data.Passward);
+                            $('#txtSport').val(data.data.SportName);
+                            $('#txtBankName').val(data.data.BankName);
+                            $('#dllDegree').val(data.data.EducationId);
+                            $('#hdImage').val(data.data.ProfileImage);
+
+                            $('#dvImage').show();
+                            $('#imPreviewImage').attr("src", "../Uploads/" + data.data.ProfileImage);
+
+                        }
+                    })
+                }
+            },
+            error: function (xhr) {
+                alert('No Valid Data');
+            }
+        })
+    }
+
+    $("#myModal").on("hidden.bs.modal", function () {
+        Clear();
+    })
+    function Delete(UserID) {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("Delete", "Home")",
+            data: { id: UserID },
+            dataType: 'json',
+            success: function (data) {
+                if (data) {
+                    alert("Successfully deleted");
+                }
+                $('#tblEmployee').DataTable().ajax.reload();
+
+
+            },
+            error: function (xhr) {
+                alert('No Valid Data');
+            }
+        })
+    }
+    function InsertData() {
+
+        if ($('#txtFullName').val().trim() == "") {
+            $('#sp_FullName').text("Fullname is required");
+            return false;
+
+        }
+        else {
+            $('#sp_FullName').text("");
+
+        }
+
+        if ($('#txtPassward').val().trim() == "") {
+            $('#sp_txtPassward').text("Password is required");
+            return false;
+        }
+        else {
+            $('#sp_txtPassward').text("");
+        }
+        if ($('#txtConfirmPassward').val().trim() == "") {
+            $('#sp_txtConfirmPassward').text("Confirm passward is required");
+            return false;
+        }
+        else {
+            $('#sp_txtConfirmPassward').text("");
+        }
+
+        if ($('#txtConfirmPassward').val().trim() != $('#txtPassward').val().trim()) {
+            $('#sp_txtConfirmPassward').text("Converim passward is not same");
+            return false;
+        }
+        else {
+            $('#sp_txtConfirmPassward').text("");
+        }
+
+        var Person = {
+            UserId: $('#hf_UserId').val(),
+            FullName: $('#txtFullName').val(),
+            Gender: $('#dllGender').val(),
+            ProfileImage: $('#hdImage').val(),
+            Passward: $('#txtPassward').val(),
+            Email: $('#txtEmail').val()
+        }
+        var Bank = {
+            BankName: $('#txtBankName').val(),
+        }
+        var Education = {
+            DegreeId: $('#dllDegree').val()
+        }
+        var Sport = {
+            SportName: $('#txtSport').val()
+        }
+        var model = {
+            "Person": Person,
+            "Bank": Bank,
+            "Education": Education,
+            "Sport": Sport
+        }
+
+        $.ajax({
+            type: "post",
+            url: "@Url.Action("InsertUpdateData", "Home")",
+            data: model,
+            dataType: 'json',
+            success: function (data) {
+                $('#hf_UserId').val(null);
+                alert("Employee data inserted successfully");
+                $('#tblEmployee').DataTable().ajax.reload();
+
+                Clear()
+            },
+            error: function (xhr) {
+                alert('Something wrong');
+            }
+        });
+
+    }
+
+
+    function UploadImage(file) {
+        //fileupload
+        $('#dvImage').show();
+        readURL(file);
+        var formData = new FormData();
+        var totalFiles = document.getElementById("fileupload").files.length;
+        for (var i = 0; i < totalFiles; i++) {
+            var file = document.getElementById("fileupload").files[i];
+            formData.append("fileupload", file);
+        }
+        $.ajax({
+            type: "post",
+            url: "@Url.Action("UploadImageData", "Home")",
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                $('#hdImage').val(data.data)
+            },
+            error: function (xhr) {
+                alert('No Valid Data');
+            }
+        })
+    }
+
+    function Clear() {
+
+        $('#UserId').val(null);
+        $('#txtFullName').val(null);
+        $('#sp_FullName').text("");
+        $('#hdImage').val(null);
+        $('#txtPassward').val(null);
+        $('#txtConfirmPassward').val(null);
+        $('#txtEmail').val(null);
+        $('#txtSport').val(null);
+        $('#txtBankName').val(null);
+        $('#hf_UserId').val(null);
+        $('#dvImage').hide();
+
+        $('#fileupload').val(null);
+        $("#dllGender").val($("#dllGender option:first").val());
+        $("#dllDegree").val($("#dllDegree option:first").val());
+    }
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#imPreviewImage').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+   
+
+</script>
